@@ -9,6 +9,7 @@ Personal site built with Vite + React and TanStack Router.
 - Tailwind CSS 4
 - TypeScript
 - Vitest
+- ESLint + Prettier
 
 ## Getting Started
 
@@ -32,6 +33,7 @@ pnpm preview  # Preview production build
 pnpm test     # Run Vitest once
 pnpm lint     # ESLint
 pnpm format   # Prettier
+pnpm format:check # Prettier check (no writes)
 pnpm check    # Prettier write + ESLint fix
 ```
 
@@ -48,3 +50,14 @@ Learn more:
 
 Tailwind CSS is configured via `tailwindcss` and the Vite plugin `@tailwindcss/vite`.
 
+## Node Version
+
+This repo uses Node 22. If you use nvm, run:
+
+```bash
+nvm use
+```
+
+## GitHub Pages
+
+This repository is a GitHub Pages user site. Deployment uses a GitHub Actions workflow that builds with pnpm and publishes `dist` on pushes to `main`.
