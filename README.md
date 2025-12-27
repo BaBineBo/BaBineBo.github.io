@@ -43,6 +43,7 @@ Routes are file-based under `src/routes`. Add a new file to create a route.
 Root layout lives in `src/routes/__root.tsx` and should render `<Outlet />`.
 
 Learn more:
+
 - https://tanstack.com/router
 - https://tanstack.com/router/latest/docs/framework/react/guide/file-based-routing
 
