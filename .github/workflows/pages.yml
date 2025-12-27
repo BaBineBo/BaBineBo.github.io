@@ -37,6 +37,12 @@ jobs:
       - name: Build
         run: pnpm build
 
+      - name: Lint
+        run: pnpm lint
+
+      - name: Prettier check
+        run: pnpm format:check
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
