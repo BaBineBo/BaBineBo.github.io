@@ -1,5 +1,5 @@
-import { SectionTitle,  SlideShell, Spacer } from './SlideShell'
-import type {SlideNextProps} from './SlideShell';
+import { SectionTitle, SlideShell, Spacer } from './SlideShell'
+import type { SlideNextProps } from './SlideShell'
 
 export function WorkSlide({ onNext, hasNext }: SlideNextProps) {
   return (

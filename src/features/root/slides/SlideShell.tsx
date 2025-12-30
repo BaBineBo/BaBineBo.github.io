@@ -14,10 +14,7 @@ type SlideShellProps = {
   hideNextAfterMs?: number
 }
 
-export type SlideNextProps = Pick<
-  SlideShellProps,
-  'onNext' | 'hasNext'
->
+export type SlideNextProps = Pick<SlideShellProps, 'onNext' | 'hasNext'>
 
 export function SlideShell({
   title,
