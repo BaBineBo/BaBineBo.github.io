@@ -50,6 +50,7 @@ Learn more:
 ## Styling
 
 Tailwind CSS is configured via `tailwindcss` and the Vite plugin `@tailwindcss/vite`.
+Custom colors live in the `@theme` block in `src/styles.css`.
 
 ## Node Version
 

@@ -1,12 +1,87 @@
+@import 'https://fonts.googleapis.com/css2?family=BBH+Hegarty:wght@400;600;700&family=PT+Sans:wght@400;700&display=swap';
 @import 'tailwindcss';
+
+@theme {
+  --color-tea_green: #ccd5ae;
+  --color-tea_green-100: #2d331a;
+  --color-tea_green-200: #5b6635;
+  --color-tea_green-300: #88994f;
+  --color-tea_green-400: #acbb7b;
+  --color-tea_green-500: #ccd5ae;
+  --color-tea_green-600: #d6debe;
+  --color-tea_green-700: #e1e6cf;
+  --color-tea_green-800: #ebeedf;
+  --color-tea_green-900: #f5f7ef;
+  --color-beige: #e9edc9;
+  --color-beige-100: #3d4216;
+  --color-beige-200: #79842c;
+  --color-beige-300: #b3c146;
+  --color-beige-400: #ced788;
+  --color-beige-500: #e9edc9;
+  --color-beige-600: #edf1d4;
+  --color-beige-700: #f2f4df;
+  --color-beige-800: #f6f8ea;
+  --color-beige-900: #fbfbf4;
+  --color-cornsilk: #fefae0;
+  --color-cornsilk-100: #5d5103;
+  --color-cornsilk-200: #baa206;
+  --color-cornsilk-300: #f8dc27;
+  --color-cornsilk-400: #fbeb84;
+  --color-cornsilk-500: #fefae0;
+  --color-cornsilk-600: #fefbe7;
+  --color-cornsilk-700: #fefced;
+  --color-cornsilk-800: #fffdf3;
+  --color-cornsilk-900: #fffef9;
+  --color-papaya_whip: #faedcd;
+  --color-papaya_whip-100: #533e08;
+  --color-papaya_whip-200: #a57b10;
+  --color-papaya_whip-300: #eab227;
+  --color-papaya_whip-400: #f2d079;
+  --color-papaya_whip-500: #faedcd;
+  --color-papaya_whip-600: #fbf1d6;
+  --color-papaya_whip-700: #fcf4e0;
+  --color-papaya_whip-800: #fdf8eb;
+  --color-papaya_whip-900: #fefbf5;
+  --color-light_bronze: #d4a373;
+  --color-light_bronze-100: #32210f;
+  --color-light_bronze-200: #64411f;
+  --color-light_bronze-300: #96622e;
+  --color-light_bronze-400: #c58341;
+  --color-light_bronze-500: #d4a373;
+  --color-light_bronze-600: #dcb68f;
+  --color-light_bronze-700: #e5c8ab;
+  --color-light_bronze-800: #eedac7;
+  --color-light_bronze-900: #f6ede3;
+}
 
 body {
   @apply m-0;
-  font-family:
-    -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu',
-    'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  font-family: 'PT Sans', 'Helvetica Neue', Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: 'BBH Hegarty', 'Helvetica Neue', Arial, sans-serif;
+  letter-spacing: 0.01em;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+ul,
+ol {
+  margin: 0;
+  padding: 0;
 }
 
 code {

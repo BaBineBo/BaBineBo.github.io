@@ -1,6 +1,7 @@
 import * as React from 'react'
 import { createFileRoute } from '@tanstack/react-router'
 import { ScrollCarousel } from '../layouts/slides'
+import { rootSlides } from '../features/root/slides'
 
 export const Route = createFileRoute('/')({
   component: RootPage,
@@ -9,105 +10,7 @@ export const Route = createFileRoute('/')({
 const NAV_H = 64
 
 function RootPage() {
-  const slideDefs = React.useMemo(
-    () => [
-      {
-        id: 'home',
-        label: 'Home',
-        background: '#0b1220',
-        node: (
-          <Slide title="Home" background="#0b1220">
-            <p className="opacity-80">This is the first slide.</p>
-            <Spacer />
-            <SectionTitle>Some content</SectionTitle>
-            <p className="opacity-80">
-              Add your intro, links, and whatever you want here.
-            </p>
-            <Spacer />
-          </Slide>
-        ),
-      },
-      {
-        id: 'work',
-        label: 'Work',
-        background: '#0f172a',
-        node: (
-          <Slide title="Work" background="#0f172a">
-            <p className="opacity-80">
-              Put projects, roles, screenshots, etc. here.
-            </p>
-            <Spacer />
-            <SectionTitle>Project list</SectionTitle>
-            <ul className="list-disc pl-6 space-y-2 opacity-90">
-              <li>Project A</li>
-              <li>Project B</li>
-              <li>Project C</li>
-            </ul>
-            <Spacer />
-          </Slide>
-        ),
-      },
-      {
-        id: 'about',
-        label: 'About',
-        background: '#111827',
-        node: (
-          <Slide title="About" background="#111827">
-            <p className="opacity-80">Bio, skills, fun facts.</p>
-            <Spacer />
-            <SectionTitle>Skills</SectionTitle>
-            <div className="flex flex-wrap gap-2">
-              {['React', 'TypeScript', 'Next.js', 'Design Systems'].map((t) => (
-                <span
-                  key={t}
-                  className="rounded-full border border-white/15 bg-white/5 px-3 py-1 text-sm"
-                >
-                  {t}
-                </span>
-              ))}
-            </div>
-            <Spacer />
-          </Slide>
-        ),
-      },
-      {
-        id: 'contact',
-        label: 'Contact',
-        background: '#0b0f19',
-        node: (
-          <Slide title="Contact" background="#0b0f19">
-            <p className="opacity-80">Links and ways to reach you.</p>
-            <Spacer />
-            <SectionTitle>Find me</SectionTitle>
-            <div className="flex flex-col gap-2">
-              <a
-                className="underline underline-offset-4 opacity-90 hover:opacity-100"
-                href="#"
-              >
-                GitHub
-              </a>
-              <a
-                className="underline underline-offset-4 opacity-90 hover:opacity-100"
-                href="#"
-              >
-                LinkedIn
-              </a>
-              <a
-                className="underline underline-offset-4 opacity-90 hover:opacity-100"
-                href="#"
-              >
-                Email
-              </a>
-            </div>
-            <Spacer />
-          </Slide>
-        ),
-      },
-    ],
-    [],
-  )
-
-  const slides = React.useMemo(() => slideDefs.map((s) => s.node), [slideDefs])
+  const slideDefs = rootSlides
 
   const getIndexFromHash = React.useCallback(() => {
     const raw = window.location.hash.replace('#', '').trim()
@@ -117,6 +20,17 @@ function RootPage() {
   }, [slideDefs])
 
   const [active, setActive] = React.useState(() => getIndexFromHash())
+  const slides = React.useMemo(
+    () =>
+      slideDefs.map((s, i) => {
+        const hasNext = i < slideDefs.length - 1
+        return s.render({
+          hasNext,
+          onNext: hasNext ? () => setActive(i + 1) : undefined,
+        })
+      }),
+    [slideDefs, setActive],
+  )
 
   const setHashForIndex = React.useCallback(
     (i: number) => {
@@ -146,24 +60,23 @@ function RootPage() {
   }, [getIndexFromHash])
 
   return (
-    <div className="h-[100dvh] w-full overflow-hidden bg-neutral-950 text-white">
+    <div className="h-[100dvh] w-full overflow-hidden bg-tea_green-900 text-tea_green-100">
       <div
-        className="flex items-center justify-between px-4"
-        style={{
-          height: NAV_H,
-          borderBottom: '1px solid rgba(255,255,255,0.08)',
-        }}
+        className="flex items-center justify-between border-b border-tea_green-700/60 bg-tea_green-900 px-4"
+        style={{ height: NAV_H }}
       >
-        <div className="font-medium">Sabine Randow</div>
-        <nav className="hidden gap-3 text-sm opacity-90 sm:flex">
-          {slideDefs.map((s, i) => (
+        <div className="font-medium text-tea_green-200">Sabine Randow</div>
+        <nav className="hidden gap-3 text-sm text-tea_green-200 sm:flex">
+          {slideDefs.slice(1).map((s, i) => (
             <button
               key={s.id}
               className={
                 'rounded-full px-3 py-1 transition ' +
-                (active === i ? 'bg-white/10' : 'hover:bg-white/5')
+                (active === i + 1
+                  ? 'bg-tea_green-700/60 text-tea_green-100'
+                  : 'hover:bg-tea_green-800/70')
               }
-              onClick={() => setActive(i)}
+              onClick={() => setActive(i + 1)}
               type="button"
             >
               {s.label}
@@ -171,7 +84,7 @@ function RootPage() {
           ))}
         </nav>
         <button
-          className="sm:hidden rounded-full border border-white/15 bg-white/5 px-3 py-1 text-sm"
+          className="sm:hidden rounded-full border border-tea_green-600/40 bg-tea_green-800/70 px-3 py-1 text-sm text-tea_green-100"
           type="button"
           aria-label="Menu"
         >
@@ -189,32 +102,4 @@ function RootPage() {
       </div>
     </div>
   )
-}
-
-function Slide({
-  title,
-  children,
-  background,
-}: {
-  title: string
-  children: React.ReactNode
-  background?: string
-}) {
-  return (
-    <div
-      className="h-full px-5 py-8 sm:px-10"
-      style={{ backgroundColor: background ?? 'transparent' }}
-    >
-      <h1 className="text-2xl font-semibold tracking-tight">{title}</h1>
-      <div className="mt-4 space-y-4">{children}</div>
-    </div>
-  )
-}
-
-function SectionTitle({ children }: { children: React.ReactNode }) {
-  return <h2 className="text-lg font-medium opacity-95">{children}</h2>
-}
-
-function Spacer() {
-  return <div className="h-24" />
 }
