@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
-import type { ReactNode } from 'react'
 import { SlideNextButton } from './SlideNextButton'
+import type { ReactNode } from 'react'
 
 type SlideShellProps = {
   title: string

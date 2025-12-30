@@ -1,8 +1,8 @@
-import type { ReactNode } from 'react'
 import { AboutSlide } from './AboutSlide'
 import { ContactSlide } from './ContactSlide'
 import { HomeSlide } from './HomeSlide'
 import { WorkSlide } from './WorkSlide'
+import type { ReactNode } from 'react'
 
 export type SlideRenderContext = {
   onNext?: () => void
@@ -15,7 +15,7 @@ export type SlideDef = {
   render: (ctx: SlideRenderContext) => ReactNode
 }
 
-export const rootSlides: SlideDef[] = [
+export const rootSlides: Array<SlideDef> = [
   {
     id: 'home',
     label: 'Home',

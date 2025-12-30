@@ -1,10 +1,11 @@
 import {
   Pill,
   SectionTitle,
+  
   SlideShell,
-  Spacer,
-  type SlideNextProps,
+  Spacer
 } from './SlideShell'
+import type {SlideNextProps} from './SlideShell';
 
 export function AboutSlide({ onNext, hasNext }: SlideNextProps) {
   return (
