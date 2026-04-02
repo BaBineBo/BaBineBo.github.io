@@ -154,7 +154,7 @@ type EmployerSectionProps = {
     company: string
     period: string
     summary: string
-    highlights: string[]
+    highlights: Array<string>
     meta: string
   }>
 }
@@ -256,7 +256,8 @@ function CvPage() {
       <section className="grid gap-4 sm:grid-cols-3">
         <PageCard palette={palette} title="What Stands Out">
           Frontend-led fullstack work, strong component and system design
-          instincts, and repeated ownership of frontend direction in small teams.
+          instincts, and repeated ownership of frontend direction in small
+          teams.
         </PageCard>
         <PageCard palette={palette} title="How Sabine Works">
           Clear abstractions, purposeful tooling, reliable documentation, and a

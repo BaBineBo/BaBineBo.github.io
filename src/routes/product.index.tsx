@@ -20,7 +20,10 @@ function ProductIndexPage() {
           Role history, selected work, technical range, and what Sabine is
           especially good at.
         </PageCard>
-        <Link to="/product/cv" className="block transition hover:-translate-y-0.5">
+        <Link
+          to="/product/cv"
+          className="block transition hover:-translate-y-0.5"
+        >
           <PageCard palette={palette} title="CV">
             Open the structured CV page with experience, skills, education, and
             the same visual language as the site.
