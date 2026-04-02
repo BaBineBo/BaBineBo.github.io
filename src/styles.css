@@ -88,3 +88,25 @@ code {
   font-family:
     source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
 }
+
+.collapsible-section summary::-webkit-details-marker {
+  display: none;
+}
+
+.collapsible-indicator {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.collapsible-icon-open {
+  display: none;
+}
+
+.collapsible-section[open] .collapsible-icon-open {
+  display: inline-flex;
+}
+
+.collapsible-section[open] .collapsible-icon-closed {
+  display: none;
+}
