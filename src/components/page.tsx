@@ -129,14 +129,14 @@ export function PageLayout({ children, palette, className }: PageLayoutProps) {
 
 type PageHeaderProps = {
   palette: PagePaletteName
-  eyebrow?: string
+
   title: string
   description: string
 }
 
 export function PageHeader({
   palette,
-  eyebrow,
+
   title,
   description,
 }: PageHeaderProps) {
@@ -144,16 +144,6 @@ export function PageHeader({
 
   return (
     <section className="space-y-4">
-      {eyebrow ? (
-        <p
-          className={cx(
-            'text-sm font-bold uppercase tracking-[0.4em]',
-            colors.eyebrow,
-          )}
-        >
-          {eyebrow}
-        </p>
-      ) : null}
       <h1
         className={cx(
           'text-[clamp(2.5rem,8vw,6rem)] font-semibold leading-none',

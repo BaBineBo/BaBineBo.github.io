@@ -12,7 +12,6 @@ function HumanMusicPage() {
     <>
       <PageHeader
         palette={palette}
-        eyebrow="Personal"
         title="Music"
         description="A few playlists that say different things about me depending on the day. Some push the pulse up a bit, some are there for a different emotional requirement, and some belong strictly to soft starts."
       />
