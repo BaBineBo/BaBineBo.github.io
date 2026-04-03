@@ -31,21 +31,19 @@ export function HomePage() {
     <main className="min-h-[100dvh] bg-tea_green-800 px-6 py-12 text-tea_green-100 sm:px-10">
       <div className="mx-auto flex min-h-[calc(100dvh-6rem)] max-w-6xl items-center justify-center text-center">
         <section className="flex w-full flex-col items-center justify-center gap-4 sm:gap-6">
-          <div className="flex flex-col items-center gap-1 sm:gap-2">
-            <h1 className="text-[clamp(3rem,10vw,8rem)] font-semibold leading-none text-tea_green-100">
-              Sabine
-            </h1>
-            <h5 className="text-[clamp(0.75rem,2.2vw,1.5rem)] uppercase tracking-[0.35em] text-tea_green-200">
-              (as a service)
-            </h5>
-            <h1 className="-mt-1 text-[clamp(3.5rem,12vw,10rem)] font-semibold leading-none text-light_bronze-200 sm:-mt-2">
-              Randow
-            </h1>
-          </div>
+          <h1 className="select-none text-[clamp(3rem,10vw,8rem)] font-semibold leading-none text-tea_green-100">
+            Sabine
+          </h1>
+          <h5 className="select-none text-[clamp(0.75rem,2.2vw,1.5rem)] uppercase tracking-[0.35em] text-tea_green-200">
+            (as a service)
+          </h5>
+          <h1 className="select-none pt-2 text-[clamp(3.5rem,12vw,10rem)] font-semibold leading-none text-light_bronze-200">
+            Randow
+          </h1>
           <nav className="mt-6 flex flex-col items-center justify-center gap-3 sm:mt-8 sm:grid sm:grid-cols-[1fr_auto_1fr] sm:items-center sm:gap-x-6">
             <Link
               to="/product"
-              className="text-center text-sm font-bold uppercase tracking-[0.4em] text-tea_green-200 transition hover:text-light_bronze-200 sm:justify-self-end"
+              className="select-none text-center text-sm font-bold uppercase tracking-[0.4em] text-tea_green-200 transition hover:text-light_bronze-200 sm:justify-self-end"
             >
               {PRODUCT_ROUTE_LABEL}
             </Link>
@@ -55,7 +53,7 @@ export function HomePage() {
             />
             <Link
               to="/human"
-              className="text-center text-sm font-bold uppercase tracking-[0.4em] text-tea_green-200 transition hover:text-light_bronze-200 sm:justify-self-start"
+              className="select-none text-center text-sm font-bold uppercase tracking-[0.4em] text-tea_green-200 transition hover:text-light_bronze-200 sm:justify-self-start"
             >
               {HUMAN_ROUTE_LABEL}
             </Link>
