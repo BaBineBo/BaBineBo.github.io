@@ -69,6 +69,7 @@ export function PageLayout({ children, palette, className }: PageLayoutProps) {
     product: 'Product',
     human: 'Human',
     cv: 'CV',
+    music: 'Music',
   }
   const breadcrumbs = pathParts.map((part, index) => ({
     label: labelMap[part] ?? part,

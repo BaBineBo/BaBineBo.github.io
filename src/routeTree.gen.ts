@@ -13,7 +13,9 @@ import { Route as ProductRouteImport } from './routes/product'
 import { Route as HumanRouteImport } from './routes/human'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ProductIndexRouteImport } from './routes/product.index'
+import { Route as HumanIndexRouteImport } from './routes/human.index'
 import { Route as ProductCvRouteImport } from './routes/product.cv'
+import { Route as HumanMusicRouteImport } from './routes/human.music'
 
 const ProductRoute = ProductRouteImport.update({
   id: '/product',
@@ -35,44 +37,74 @@ const ProductIndexRoute = ProductIndexRouteImport.update({
   path: '/',
   getParentRoute: () => ProductRoute,
 } as any)
+const HumanIndexRoute = HumanIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => HumanRoute,
+} as any)
 const ProductCvRoute = ProductCvRouteImport.update({
   id: '/cv',
   path: '/cv',
   getParentRoute: () => ProductRoute,
 } as any)
+const HumanMusicRoute = HumanMusicRouteImport.update({
+  id: '/music',
+  path: '/music',
+  getParentRoute: () => HumanRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/human': typeof HumanRoute
+  '/human': typeof HumanRouteWithChildren
   '/product': typeof ProductRouteWithChildren
+  '/human/music': typeof HumanMusicRoute
   '/product/cv': typeof ProductCvRoute
+  '/human/': typeof HumanIndexRoute
   '/product/': typeof ProductIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/human': typeof HumanRoute
+  '/human/music': typeof HumanMusicRoute
   '/product/cv': typeof ProductCvRoute
+  '/human': typeof HumanIndexRoute
   '/product': typeof ProductIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/human': typeof HumanRoute
+  '/human': typeof HumanRouteWithChildren
   '/product': typeof ProductRouteWithChildren
+  '/human/music': typeof HumanMusicRoute
   '/product/cv': typeof ProductCvRoute
+  '/human/': typeof HumanIndexRoute
   '/product/': typeof ProductIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/human' | '/product' | '/product/cv' | '/product/'
+  fullPaths:
+    | '/'
+    | '/human'
+    | '/product'
+    | '/human/music'
+    | '/product/cv'
+    | '/human/'
+    | '/product/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/human' | '/product/cv' | '/product'
-  id: '__root__' | '/' | '/human' | '/product' | '/product/cv' | '/product/'
+  to: '/' | '/human/music' | '/product/cv' | '/human' | '/product'
+  id:
+    | '__root__'
+    | '/'
+    | '/human'
+    | '/product'
+    | '/human/music'
+    | '/product/cv'
+    | '/human/'
+    | '/product/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  HumanRoute: typeof HumanRoute
+  HumanRoute: typeof HumanRouteWithChildren
   ProductRoute: typeof ProductRouteWithChildren
 }
 
@@ -106,6 +138,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProductIndexRouteImport
       parentRoute: typeof ProductRoute
     }
+    '/human/': {
+      id: '/human/'
+      path: '/'
+      fullPath: '/human/'
+      preLoaderRoute: typeof HumanIndexRouteImport
+      parentRoute: typeof HumanRoute
+    }
     '/product/cv': {
       id: '/product/cv'
       path: '/cv'
@@ -113,8 +152,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProductCvRouteImport
       parentRoute: typeof ProductRoute
     }
+    '/human/music': {
+      id: '/human/music'
+      path: '/music'
+      fullPath: '/human/music'
+      preLoaderRoute: typeof HumanMusicRouteImport
+      parentRoute: typeof HumanRoute
+    }
   }
 }
+
+interface HumanRouteChildren {
+  HumanMusicRoute: typeof HumanMusicRoute
+  HumanIndexRoute: typeof HumanIndexRoute
+}
+
+const HumanRouteChildren: HumanRouteChildren = {
+  HumanMusicRoute: HumanMusicRoute,
+  HumanIndexRoute: HumanIndexRoute,
+}
+
+const HumanRouteWithChildren = HumanRoute._addFileChildren(HumanRouteChildren)
 
 interface ProductRouteChildren {
   ProductCvRoute: typeof ProductCvRoute
@@ -131,7 +189,7 @@ const ProductRouteWithChildren =
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  HumanRoute: HumanRoute,
+  HumanRoute: HumanRouteWithChildren,
   ProductRoute: ProductRouteWithChildren,
 }
 export const routeTree = rootRouteImport
