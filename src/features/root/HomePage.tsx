@@ -1,6 +1,7 @@
 import { Link } from '@tanstack/react-router'
 import { useState } from 'react'
 import { Mail } from 'react-swm-icon-pack'
+import { HomeSideLoop } from './HomeSideLoop'
 import { GitHubIcon } from '@/lib/icons/GitHubIcon'
 import { LinkedInIcon } from '@/lib/icons/LinkedInIcon'
 import { SubstackIcon } from '@/lib/icons/SubstackIcon'
@@ -28,7 +29,9 @@ export function HomePage() {
   const [activeContact, setActiveContact] = useState<string | null>(null)
 
   return (
-    <main className="min-h-[100dvh] bg-tea_green-800 px-6 py-12 text-tea_green-100 sm:px-10">
+    <main className="relative min-h-[100dvh] overflow-hidden bg-tea_green-800 px-6 py-12 text-tea_green-100 sm:px-10">
+      <HomeSideLoop side="left" />
+      <HomeSideLoop side="right" />
       <div className="mx-auto flex min-h-[calc(100dvh-6rem)] max-w-6xl items-center justify-center text-center">
         <section className="flex w-full flex-col items-center justify-center gap-4 sm:gap-6">
           <h1 className="select-none text-[clamp(3rem,10vw,8rem)] font-semibold leading-none text-tea_green-100">
