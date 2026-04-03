@@ -22,7 +22,7 @@ function ProductIndexPage() {
         </PageCard>
         <Link
           to="/product/cv"
-          className="block transition hover:-translate-y-0.5"
+          className="block h-full transition hover:-translate-y-0.5"
         >
           <PageCard palette={palette} title="CV">
             Open the structured CV page with experience, skills, education, and

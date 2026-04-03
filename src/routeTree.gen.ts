@@ -16,6 +16,7 @@ import { Route as ProductIndexRouteImport } from './routes/product.index'
 import { Route as HumanIndexRouteImport } from './routes/human.index'
 import { Route as ProductCvRouteImport } from './routes/product.cv'
 import { Route as HumanMusicRouteImport } from './routes/human.music'
+import { Route as HumanHobbiesRouteImport } from './routes/human.hobbies'
 
 const ProductRoute = ProductRouteImport.update({
   id: '/product',
@@ -52,11 +53,17 @@ const HumanMusicRoute = HumanMusicRouteImport.update({
   path: '/music',
   getParentRoute: () => HumanRoute,
 } as any)
+const HumanHobbiesRoute = HumanHobbiesRouteImport.update({
+  id: '/hobbies',
+  path: '/hobbies',
+  getParentRoute: () => HumanRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/human': typeof HumanRouteWithChildren
   '/product': typeof ProductRouteWithChildren
+  '/human/hobbies': typeof HumanHobbiesRoute
   '/human/music': typeof HumanMusicRoute
   '/product/cv': typeof ProductCvRoute
   '/human/': typeof HumanIndexRoute
@@ -64,6 +71,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/human/hobbies': typeof HumanHobbiesRoute
   '/human/music': typeof HumanMusicRoute
   '/product/cv': typeof ProductCvRoute
   '/human': typeof HumanIndexRoute
@@ -74,6 +82,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/human': typeof HumanRouteWithChildren
   '/product': typeof ProductRouteWithChildren
+  '/human/hobbies': typeof HumanHobbiesRoute
   '/human/music': typeof HumanMusicRoute
   '/product/cv': typeof ProductCvRoute
   '/human/': typeof HumanIndexRoute
@@ -85,17 +94,25 @@ export interface FileRouteTypes {
     | '/'
     | '/human'
     | '/product'
+    | '/human/hobbies'
     | '/human/music'
     | '/product/cv'
     | '/human/'
     | '/product/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/human/music' | '/product/cv' | '/human' | '/product'
+  to:
+    | '/'
+    | '/human/hobbies'
+    | '/human/music'
+    | '/product/cv'
+    | '/human'
+    | '/product'
   id:
     | '__root__'
     | '/'
     | '/human'
     | '/product'
+    | '/human/hobbies'
     | '/human/music'
     | '/product/cv'
     | '/human/'
@@ -159,15 +176,24 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof HumanMusicRouteImport
       parentRoute: typeof HumanRoute
     }
+    '/human/hobbies': {
+      id: '/human/hobbies'
+      path: '/hobbies'
+      fullPath: '/human/hobbies'
+      preLoaderRoute: typeof HumanHobbiesRouteImport
+      parentRoute: typeof HumanRoute
+    }
   }
 }
 
 interface HumanRouteChildren {
+  HumanHobbiesRoute: typeof HumanHobbiesRoute
   HumanMusicRoute: typeof HumanMusicRoute
   HumanIndexRoute: typeof HumanIndexRoute
 }
 
 const HumanRouteChildren: HumanRouteChildren = {
+  HumanHobbiesRoute: HumanHobbiesRoute,
   HumanMusicRoute: HumanMusicRoute,
   HumanIndexRoute: HumanIndexRoute,
 }

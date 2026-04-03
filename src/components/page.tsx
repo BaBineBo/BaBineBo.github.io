@@ -70,6 +70,7 @@ export function PageLayout({ children, palette, className }: PageLayoutProps) {
     human: 'Human',
     cv: 'CV',
     music: 'Music',
+    hobbies: 'Hobbies',
   }
   const breadcrumbs = pathParts.map((part, index) => ({
     label: labelMap[part] ?? part,
@@ -171,7 +172,7 @@ export function PageCard({ palette, title, children }: PageCardProps) {
   return (
     <article
       className={cx(
-        'rounded-3xl border p-6',
+        'flex h-full flex-col rounded-3xl border p-6',
         colors.cardBorder,
         colors.cardBackground,
       )}
@@ -179,7 +180,9 @@ export function PageCard({ palette, title, children }: PageCardProps) {
       <h2 className={cx('text-xl font-semibold', colors.cardHeader)}>
         {title}
       </h2>
-      <div className={cx('mt-3 text-base leading-relaxed', colors.cardBody)}>
+      <div
+        className={cx('mt-3 flex-1 text-base leading-relaxed', colors.cardBody)}
+      >
         {children}
       </div>
     </article>
