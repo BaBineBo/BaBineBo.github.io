@@ -1,0 +1,4 @@
+interface:
+  display_name: 'Icon Management'
+  short_description: 'Choose and integrate icons from libraries or SVG assets.'
+  default_prompt: 'Use $icon-management to add or replace icons in this project, preferring installed icon libraries and falling back to project SVG assets when needed.'

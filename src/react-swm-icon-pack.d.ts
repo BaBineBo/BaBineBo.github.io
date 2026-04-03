@@ -10,4 +10,5 @@ declare module 'react-swm-icon-pack' {
   export const ChevronDown: ComponentType<IconProps>
   export const ChevronRight: ComponentType<IconProps>
   export const Home1: ComponentType<IconProps>
+  export const Mail: ComponentType<IconProps>
 }
