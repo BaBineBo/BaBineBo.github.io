@@ -1,9 +1,32 @@
 import { Link } from '@tanstack/react-router'
+import { useState } from 'react'
 import { Mail } from 'react-swm-icon-pack'
+import { GitHubIcon } from '@/lib/icons/GitHubIcon'
 import { LinkedInIcon } from '@/lib/icons/LinkedInIcon'
 import { SubstackIcon } from '@/lib/icons/SubstackIcon'
 
+const PRODUCT_ROUTE_LABEL = 'sabine as a product'
+const HUMAN_ROUTE_LABEL = 'sabine as a human'
+const CONTACT_BUTTON_CLASS_NAME =
+  'inline-flex h-11 w-11 items-center justify-center rounded-full border border-tea_green-300/40 bg-tea_green-900/40 text-tea_green-200 transition hover:border-light_bronze-300/50 hover:text-light_bronze-200'
+
+const CONTACT_HINTS = {
+  email: 'Ping the service (send me an email)',
+  linkedin: 'Watch me try to interact with professionals on LinkedIn',
+  substack: 'Watch me interact with everyone else on Substack',
+  github: 'Takes you to the website repo',
+} as const
+
+const CONTACT_LINKS = {
+  email: 'mailto:ping@saaas.se',
+  linkedin: 'https://www.linkedin.com/in/sabine-r-4a9217116/',
+  substack: 'https://substack.com/@babinebo',
+  github: 'https://github.com/BaBineBo/BaBineBo.github.io',
+} as const
+
 export function HomeSlide() {
+  const [activeContact, setActiveContact] = useState<string | null>(null)
+
   return (
     <main className="min-h-[100dvh] bg-tea_green-800 px-6 py-12 text-tea_green-100 sm:px-10">
       <div className="mx-auto flex min-h-[calc(100dvh-6rem)] max-w-6xl items-center justify-center text-center">
@@ -22,7 +45,7 @@ export function HomeSlide() {
               to="/product"
               className="text-center text-sm font-bold uppercase tracking-[0.4em] text-tea_green-200 transition hover:text-light_bronze-200 sm:justify-self-end"
             >
-              sabine as a product
+              {PRODUCT_ROUTE_LABEL}
             </Link>
             <span
               aria-hidden="true"
@@ -32,7 +55,7 @@ export function HomeSlide() {
               to="/human"
               className="text-center text-sm font-bold uppercase tracking-[0.4em] text-tea_green-200 transition hover:text-light_bronze-200 sm:justify-self-start"
             >
-              sabine as a human
+              {HUMAN_ROUTE_LABEL}
             </Link>
           </nav>
           <div
@@ -41,31 +64,59 @@ export function HomeSlide() {
           />
           <div className="flex flex-row items-center justify-center gap-3 sm:gap-4">
             <a
-              href="mailto:ping@saaas.se"
+              href={CONTACT_LINKS.email}
               aria-label="Email Sabine"
-              className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-tea_green-300/40 bg-tea_green-900/40 text-tea_green-200 transition hover:border-light_bronze-300/50 hover:text-light_bronze-200"
+              className={CONTACT_BUTTON_CLASS_NAME}
+              onMouseEnter={() => setActiveContact(CONTACT_HINTS.email)}
+              onMouseLeave={() => setActiveContact(null)}
+              onFocus={() => setActiveContact(CONTACT_HINTS.email)}
+              onBlur={() => setActiveContact(null)}
             >
               <Mail className="h-6 w-6" color="currentColor" />
             </a>
             <a
-              href="https://www.linkedin.com/in/sabine-r-4a9217116/"
+              href={CONTACT_LINKS.linkedin}
               target="_blank"
               rel="noreferrer"
               aria-label="Sabine on LinkedIn"
-              className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-tea_green-300/40 bg-tea_green-900/40 text-tea_green-200 transition hover:border-light_bronze-300/50 hover:text-light_bronze-200"
+              className={CONTACT_BUTTON_CLASS_NAME}
+              onMouseEnter={() => setActiveContact(CONTACT_HINTS.linkedin)}
+              onMouseLeave={() => setActiveContact(null)}
+              onFocus={() => setActiveContact(CONTACT_HINTS.linkedin)}
+              onBlur={() => setActiveContact(null)}
             >
               <LinkedInIcon />
             </a>
             <a
-              href="https://substack.com/@babinebo"
+              href={CONTACT_LINKS.substack}
               target="_blank"
               rel="noreferrer"
               aria-label="Sabine on Substack"
-              className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-tea_green-300/40 bg-tea_green-900/40 text-tea_green-200 transition hover:border-light_bronze-300/50 hover:text-light_bronze-200"
+              className={CONTACT_BUTTON_CLASS_NAME}
+              onMouseEnter={() => setActiveContact(CONTACT_HINTS.substack)}
+              onMouseLeave={() => setActiveContact(null)}
+              onFocus={() => setActiveContact(CONTACT_HINTS.substack)}
+              onBlur={() => setActiveContact(null)}
             >
               <SubstackIcon />
             </a>
+            <a
+              href={CONTACT_LINKS.github}
+              target="_blank"
+              rel="noreferrer"
+              aria-label="Sabine on GitHub"
+              className={CONTACT_BUTTON_CLASS_NAME}
+              onMouseEnter={() => setActiveContact(CONTACT_HINTS.github)}
+              onMouseLeave={() => setActiveContact(null)}
+              onFocus={() => setActiveContact(CONTACT_HINTS.github)}
+              onBlur={() => setActiveContact(null)}
+            >
+              <GitHubIcon />
+            </a>
           </div>
+          <p className="min-h-6 text-center text-sm italic text-tea_green-200/90">
+            {activeContact ?? ''}
+          </p>
         </section>
       </div>
     </main>
