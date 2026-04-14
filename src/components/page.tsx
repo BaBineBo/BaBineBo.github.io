@@ -144,10 +144,10 @@ export function PageHeader({
   const colors = getPagePalette(palette)
 
   return (
-    <section className="space-y-4">
+    <section className="flex flex-col gap-8">
       <h1
         className={cx(
-          'text-[clamp(2.5rem,8vw,6rem)] font-semibold leading-none',
+          'max-w-[24ch] text-[clamp(2.5rem,5vw,4.75rem)] font-semibold leading-[1.02]',
           colors.header,
         )}
       >

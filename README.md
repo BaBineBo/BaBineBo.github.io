@@ -4,7 +4,7 @@ Personal site built with Vite + React and TanStack Router.
 
 ## Tech Stack
 
-- Vite 7 + React 19
+- Vite 8 + React 19
 - TanStack Router (file-based routing)
 - Tailwind CSS 4
 - TypeScript

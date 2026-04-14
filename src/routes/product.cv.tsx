@@ -1,162 +1,387 @@
 import { createFileRoute } from '@tanstack/react-router'
+import Fuse from 'fuse.js'
+import { useState, useTransition } from 'react'
 import { ChevronDown, ChevronRight } from 'react-swm-icon-pack'
+import Newscreen from 'react-swm-icon-pack/dist/Icons/Newscreen.js'
 import { PageCard, PageHeader } from '../components/page'
+import {
+  experienceSections,
+  getAllCvExperienceRecords,
+  getAllCvSkills,
+  languages,
+} from '../data/cv'
+import type { FuseResult } from 'fuse.js'
+import type { ReactNode } from 'react'
+import type {
+  CvEmployerSection,
+  CvExperience,
+  CvExperienceRecord,
+} from '../data/cv'
 
 export const Route = createFileRoute('/product/cv')({
   component: CvPage,
 })
 
-const skills = [
-  {
-    title: 'Programming Languages & Frameworks',
-    items:
-      'CSS, Expo, Go, HTML, Javascript, Next.js, Node.js, Python, React, React Native, Typescript',
-  },
-  {
-    title: 'Web & App Development',
-    items:
-      'Atomic Design Systems, Axios, CodePush, Deeplinking, Form Validation, Material UI, OTA Updates, Push Notifications, React Hook Form, React Query, Redux, Storybook, Tailwind CSS, Vite, WebView, Zod, i18n',
-  },
-  {
-    title: 'Testing',
-    items:
-      'E2E Testing, Jest, Maestro, Playwright, React Testing Library, Vitest',
-  },
-  {
-    title: 'Databases & API',
-    items: 'Convex, MongoDB, PostgreSQL, REST, Swagger',
-  },
-  {
-    title: 'CI/CD, DevOps & Infrastructure',
-    items: 'Azure DevOps, Docker, GitHub Actions, Husky',
-  },
-  {
-    title: 'Environments & Tools',
-    items:
-      'Android Studio, App Store Connect, Azure, Confluence, Docker, Expo Go, Figma, Firebase, GitHub, GitLab, Google Play Console, Jira, VS Code, XCode',
-  },
-]
-
-const deviesExperience = [
-  {
-    role: 'Frontend Lead',
-    company: 'SMT Data',
-    period: '2025 Q3 - ongoing',
-    summary:
-      'Owns the frontend for ITBI, a multitenant SaaS platform for IT cost and capacity optimization. Works independently in a backend-heavy team, building features, shaping UI, fixing bugs, and driving frontend architecture decisions.',
-    highlights: [
-      'Built with React, TypeScript, and Vite using file-based routing and a Bulletproof React-inspired structure.',
-      'Handles authentication, role access, and session logic through Zitadel in a multitenant environment.',
-      'Implemented a message bridge between the portal and embedded TARGIT dashboards for real-time communication.',
-      'Uses Playwright and Vitest for testing and contributes to SOC 2 Type II and ISO 27001 readiness.',
-      'Developed reusable AI-agent skills and taught teammates how to use agent-assisted development effectively.',
-    ],
-    meta: 'React, Typescript, Vite, React Router, Zitadel, TARGIT',
-  },
-  {
-    role: 'Fullstack Developer',
-    company: 'Lea Bank',
-    period: '2025 Q1 - 2025 Q2',
-    summary:
-      'Worked on digital flows for loans and credit cards in a stateless Next.js setup communicating with bank systems through external APIs.',
-    highlights: [
-      'Introduced atomic design thinking for the component library.',
-      'Built major form flows with validation using React Hook Form and Zod.',
-      'Strengthened E2E coverage with Playwright.',
-      'Introduced Husky across repositories and improved CI/CD and environment setup.',
-      'Took responsibility for daily planning in Azure DevOps during parts of the project.',
-    ],
-    meta: 'Next.js, Storybook, Typescript, React, React Query, React Hook Form, Docker, Playwright, Strapi, i18n, Material UI, Zod',
-  },
-]
-
-const heloExperience = [
-  {
-    role: 'Frontend App/Web Lead',
-    company: 'Chalmers Student Union',
-    period: '2023 Q2 - 2025 Q1',
-    summary:
-      'Led frontend development for Kårappen and related interfaces in a small team, owning mobile app features and associated admin flows.',
-    highlights: [
-      'Implemented BankID login, Swish payments, notification management with Notifee, and OTA updates via CodePush.',
-      'Introduced API-first collaboration and led technical design discussions between backend and UX/UI.',
-      'Built the component library with Tailwind CSS and standardized form handling with React Hook Form.',
-      'Owned form logic, local browser caching, and E2E coverage in the admin interface.',
-      'Built GoBookGo from scratch as an embedded WebView-based front-end project inside the app.',
-    ],
-    meta: 'React Native, React, Playwright, Maestro, Swish, BankID, Notifee, Typescript, WebView, Redux, Vite, React Query, CodePush, Tailwind CSS',
-  },
-  {
-    role: 'Frontend Developer',
-    company: 'Allevi',
-    period: '2024 Q1 - 2024 Q4',
-    summary:
-      'Contributed to both web and mobile applications for AiAi, a personal assistance system with complex scheduling, reporting, and chat functionality.',
-    highlights: [
-      'Implemented a nested datagrid-based time reporting flow with careful state and rendering optimization.',
-      'Owned the real-time chat experience across web and mobile, including editing, deletion, push notifications, and local state updates.',
-      'Worked with generated types and shared API clients from Swagger-based backend contracts.',
-      'Set up Axios interceptors and user-friendly error handling patterns.',
-      'Handled file-based navigation, deeplinking, and push notification flows in the Expo-based mobile app.',
-    ],
-    meta: 'React, React Native, Bryntum, WebSockets, SignalR, React Query, Typescript, Material UI, Vite, Expo, Axios, Deeplinking, Push Notifications, Vitest',
-  },
-  {
-    role: 'Frontend Developer',
-    company: 'SkiStar',
-    period: '2023 Q4 - 2024 Q1',
-    summary:
-      'Worked primarily on the SkiStar 360 mobile app and also contributed to the admin portal for mountain experiences, bookings, and 3D resort maps.',
-    highlights: [
-      'Built in React Native with Unity-integrated 3D maps, booking flows, and internationalization.',
-      'Quickly became self-sufficient in an existing project and delivered accurate implementation estimates.',
-      'Repeatedly recognized for structured work and positive team energy.',
-    ],
-    meta: 'React Native, React, i18n, Typescript, React Query, Javascript, Git, Redux',
-  },
-  {
-    role: 'Frontend Developer',
-    company: 'Pulsen Group',
-    period: '2024 Q3',
-    summary:
-      'Part of a small cross-functional team building Pulsentrappan, an app for elite women football players planning life after football.',
-    highlights: [
-      'Worked across screen structure, form flows, and presentation of quiz and career-plan views.',
-      'Adapted and extended an existing app foundation under a tight three-month timeline.',
-      'Collaborated closely with UX and backend around AI-powered result flows.',
-    ],
-    meta: 'React Native, Typescript',
-  },
-]
-
-const operaExperience = [
-  {
-    role: 'React/Go Developer',
-    company: 'Opera',
-    period: '2022 Q3 - 2022 Q4',
-    summary:
-      'Built an internal tool during a summer internship, visualizing assets linked to different cryptocurrencies for the Opera Crypto browser context.',
-    highlights: [
-      'Owned the full chain from React frontend to Go backend.',
-      'Worked independently with supervisor feedback in a Docker-based local environment.',
-      'Gained early hands-on experience with professional production workflows during studies.',
-    ],
-    meta: 'Go, React, Typescript, Docker',
-  },
-]
+type ExperienceSort = 'newest' | 'oldest'
 
 type EmployerSectionProps = {
   heading: string
   summary: string
   href?: string
-  items: Array<{
-    role: string
-    company: string
-    period: string
-    summary: string
-    highlights: Array<string>
-    meta: string
-  }>
+  items: Array<CvExperience>
+  highlightMap: Map<CvExperience, ExperienceHighlights>
+  showDivider?: boolean
+}
+
+type HighlightIndices = Array<[number, number]>
+
+type ExperienceHighlights = {
+  role: HighlightIndices
+  company: HighlightIndices
+  periodLabel: HighlightIndices
+  summary: HighlightIndices
+  description: Map<number, HighlightIndices>
+  skills: Map<number, HighlightIndices>
+}
+
+type SearchResultMap = Map<CvExperience, ExperienceHighlights>
+
+const allExperienceRecords = getAllCvExperienceRecords()
+
+const experienceSearch = new Fuse(allExperienceRecords, {
+  threshold: 0.3,
+  ignoreLocation: true,
+  ignoreFieldNorm: true,
+  includeMatches: true,
+  minMatchCharLength: 2,
+  keys: [
+    { name: 'experience.summary', weight: 0.3 },
+    { name: 'experience.description', weight: 0.3 },
+    { name: 'employerSummary', weight: 0.15 },
+    { name: 'experience.skills', weight: 0.1 },
+    { name: 'experience.role', weight: 0.06 },
+    { name: 'experience.company', weight: 0.04 },
+    { name: 'employerHeading', weight: 0.03 },
+    { name: 'experience.period.label', weight: 0.02 },
+  ],
+})
+
+function normalizeIndices(indices: ReadonlyArray<readonly [number, number]>) {
+  if (indices.length === 0) {
+    return []
+  }
+
+  const sorted = [...indices].sort((left, right) => left[0] - right[0])
+  const merged: Array<[number, number]> = [[sorted[0][0], sorted[0][1]]]
+
+  for (const [start, end] of sorted.slice(1)) {
+    const previous = merged[merged.length - 1]
+
+    if (start <= previous[1] + 1) {
+      previous[1] = Math.max(previous[1], end)
+      continue
+    }
+
+    merged.push([start, end])
+  }
+
+  return merged
+}
+
+function createEmptyHighlights(): ExperienceHighlights {
+  return {
+    role: [],
+    company: [],
+    periodLabel: [],
+    summary: [],
+    description: new Map(),
+    skills: new Map(),
+  }
+}
+
+function mergeHighlightLists(
+  current: HighlightIndices,
+  next: ReadonlyArray<readonly [number, number]>,
+) {
+  return normalizeIndices([...current, ...next])
+}
+
+function renderHighlightedText(
+  value: string,
+  indices: HighlightIndices,
+  keyPrefix: string,
+) {
+  if (indices.length === 0) {
+    return value
+  }
+
+  const parts: Array<ReactNode> = []
+  let cursor = 0
+
+  indices.forEach(([start, end], index) => {
+    if (cursor < start) {
+      parts.push(value.slice(cursor, start))
+    }
+
+    parts.push(
+      <mark
+        key={`${keyPrefix}-${start}-${end}-${index}`}
+        className="rounded-sm bg-light_bronze-300/20 px-0.5 text-light_bronze-200"
+      >
+        {value.slice(start, end + 1)}
+      </mark>,
+    )
+
+    cursor = end + 1
+  })
+
+  if (cursor < value.length) {
+    parts.push(value.slice(cursor))
+  }
+
+  return parts
+}
+
+function getPeriodSortValue(
+  period: CvExperience['period'],
+  direction: ExperienceSort,
+) {
+  if (period.end) {
+    return period.end.getTime()
+  }
+
+  return direction === 'newest'
+    ? Number.POSITIVE_INFINITY
+    : Number.NEGATIVE_INFINITY
+}
+
+function sortExperiences(
+  items: Array<CvExperience>,
+  direction: ExperienceSort,
+) {
+  return [...items].sort((left, right) => {
+    const primary =
+      getPeriodSortValue(right.period, direction) -
+      getPeriodSortValue(left.period, direction)
+
+    if (direction === 'oldest') {
+      const oldestPrimary =
+        getPeriodSortValue(left.period, direction) -
+        getPeriodSortValue(right.period, direction)
+
+      if (oldestPrimary !== 0) {
+        return oldestPrimary
+      }
+
+      return left.period.start.getTime() - right.period.start.getTime()
+    }
+
+    if (primary !== 0) {
+      return primary
+    }
+
+    return right.period.start.getTime() - left.period.start.getTime()
+  })
+}
+
+function filterAndSortSections(
+  sections: Array<CvEmployerSection>,
+  matchingExperiences: SearchResultMap | null,
+  selectedSkill: string,
+  sortDirection: ExperienceSort,
+) {
+  return sections
+    .map((section) => ({
+      ...section,
+      items: sortExperiences(
+        section.items.filter((item) => {
+          const matchesSearch = matchingExperiences
+            ? matchingExperiences.has(item)
+            : true
+          const matchesSkill = selectedSkill
+            ? item.skills.includes(selectedSkill)
+            : true
+
+          return matchesSearch && matchesSkill
+        }),
+        sortDirection,
+      ),
+    }))
+    .filter((section) => section.items.length > 0)
+}
+
+function getMatchingExperiences(searchTerm: string) {
+  const normalizedSearchTerm = searchTerm.trim()
+
+  if (!normalizedSearchTerm) {
+    return null
+  }
+
+  const matches: SearchResultMap = new Map()
+
+  experienceSearch
+    .search(normalizedSearchTerm)
+    .forEach((result: FuseResult<CvExperienceRecord>) => {
+      const existingHighlights =
+        matches.get(result.item.experience) ?? createEmptyHighlights()
+
+      result.matches?.forEach((match) => {
+        if (match.key === 'experience.role') {
+          existingHighlights.role = mergeHighlightLists(
+            existingHighlights.role,
+            match.indices,
+          )
+        }
+
+        if (match.key === 'experience.company') {
+          existingHighlights.company = mergeHighlightLists(
+            existingHighlights.company,
+            match.indices,
+          )
+        }
+
+        if (match.key === 'experience.period.label') {
+          existingHighlights.periodLabel = mergeHighlightLists(
+            existingHighlights.periodLabel,
+            match.indices,
+          )
+        }
+
+        if (match.key === 'experience.summary') {
+          existingHighlights.summary = mergeHighlightLists(
+            existingHighlights.summary,
+            match.indices,
+          )
+        }
+
+        if (match.key === 'experience.description') {
+          const descriptionIndex =
+            typeof match.refIndex === 'number' ? match.refIndex : 0
+          const currentHighlights =
+            existingHighlights.description.get(descriptionIndex) ?? []
+
+          existingHighlights.description.set(
+            descriptionIndex,
+            mergeHighlightLists(currentHighlights, match.indices),
+          )
+        }
+
+        if (match.key === 'experience.skills') {
+          const skillIndex =
+            typeof match.refIndex === 'number' ? match.refIndex : 0
+          const currentHighlights =
+            existingHighlights.skills.get(skillIndex) ?? []
+
+          existingHighlights.skills.set(
+            skillIndex,
+            mergeHighlightLists(currentHighlights, match.indices),
+          )
+        }
+      })
+
+      matches.set(result.item.experience, existingHighlights)
+    })
+
+  return matches
+}
+
+function ExperienceToolbar({
+  searchInputValue,
+  searchTerm,
+  selectedSkill,
+  sortDirection,
+  skills,
+  totalMatches,
+  isFiltering,
+  onSearchChange,
+  onSkillChange,
+  onSortChange,
+}: {
+  searchInputValue: string
+  searchTerm: string
+  selectedSkill: string
+  sortDirection: ExperienceSort
+  skills: Array<string>
+  totalMatches: number
+  isFiltering: boolean
+  onSearchChange: (value: string) => void
+  onSkillChange: (value: string) => void
+  onSortChange: (value: ExperienceSort) => void
+}) {
+  return (
+    <div className="rounded-[2rem] border border-tea_green-700/60 bg-tea_green-800/40 p-5">
+      <div className="flex flex-wrap-reverse items-start justify-between gap-3 sm:flex-nowrap">
+        <div className="min-w-0">
+          <p className="text-sm font-bold uppercase tracking-[0.3em] text-tea_green-300">
+            Experience toolbar
+          </p>
+          <p className="mt-2 max-w-2xl text-sm leading-relaxed text-tea_green-200">
+            Ready for more filters. Right now you can search all experience
+            text, filter by skill, and sort the experience list by date.
+          </p>
+        </div>
+        <div className="shrink-0 text-right">
+          <p className="text-sm font-bold uppercase tracking-[0.3em] text-light_bronze-300">
+            {totalMatches} matches
+          </p>
+          <p className="mt-2 text-xs font-bold uppercase tracking-[0.3em] text-tea_green-300">
+            {isFiltering ? 'Updating...' : 'Ready'}
+          </p>
+        </div>
+      </div>
+      <div className="mt-5 grid gap-4 sm:grid-cols-3">
+        <label className="space-y-2 sm:col-span-3">
+          <span className="text-xs font-bold uppercase tracking-[0.3em] text-tea_green-300">
+            Search experience
+          </span>
+          <input
+            type="search"
+            value={searchInputValue}
+            onChange={(event) => onSearchChange(event.target.value)}
+            placeholder="Search company, role, summary, skills, or descriptions"
+            className="w-full rounded-2xl border border-tea_green-700/60 bg-tea_green-900 px-4 py-3 text-base text-tea_green-100 outline-none transition placeholder:text-tea_green-400 focus:border-light_bronze-300"
+          />
+          <p className="text-xs leading-relaxed text-tea_green-300">
+            {searchTerm
+              ? `Searching for "${searchTerm}".`
+              : 'Search runs across all text inside each experience entry.'}
+          </p>
+        </label>
+        <label className="space-y-2">
+          <span className="text-xs font-bold uppercase tracking-[0.3em] text-tea_green-300">
+            Filter by skill
+          </span>
+          <select
+            value={selectedSkill}
+            onChange={(event) => onSkillChange(event.target.value)}
+            className="w-full rounded-2xl border border-tea_green-700/60 bg-tea_green-900 px-4 py-3 text-base text-tea_green-100 outline-none transition focus:border-light_bronze-300"
+          >
+            <option value="">All skills</option>
+            {skills.map((skill) => (
+              <option key={skill} value={skill}>
+                {skill}
+              </option>
+            ))}
+          </select>
+        </label>
+        <label className="space-y-2">
+          <span className="text-xs font-bold uppercase tracking-[0.3em] text-tea_green-300">
+            Sort by
+          </span>
+          <select
+            value={sortDirection}
+            onChange={(event) =>
+              onSortChange(event.target.value as ExperienceSort)
+            }
+            className="w-full rounded-2xl border border-tea_green-700/60 bg-tea_green-900 px-4 py-3 text-base text-tea_green-100 outline-none transition focus:border-light_bronze-300"
+          >
+            <option value="newest">Newest first</option>
+            <option value="oldest">Oldest first</option>
+          </select>
+        </label>
+      </div>
+    </div>
+  )
 }
 
 function EmployerSection({
@@ -164,15 +389,14 @@ function EmployerSection({
   summary,
   href,
   items,
+  highlightMap,
+  showDivider,
 }: EmployerSectionProps) {
   return (
-    <details
-      open
-      className="collapsible-section rounded-[2rem] border border-tea_green-700/60 bg-tea_green-800/40 px-6 py-5"
-    >
+    <details open className="collapsible-section py-2">
       <summary className="cursor-pointer list-none">
-        <div className="flex flex-wrap items-center justify-between gap-4">
-          <div className="flex flex-wrap items-center gap-4">
+        <div className="flex flex-wrap items-start justify-between gap-4">
+          <div className="flex flex-wrap items-baseline gap-3">
             <h2 className="text-2xl font-semibold text-light_bronze-300">
               {heading}
             </h2>
@@ -181,10 +405,11 @@ function EmployerSection({
                 href={href}
                 target="_blank"
                 rel="noreferrer"
-                className="text-sm font-bold uppercase tracking-[0.3em] text-tea_green-300 transition hover:text-light_bronze-300"
+                aria-label={`Open ${heading} website`}
+                className="inline-flex items-center justify-center text-tea_green-300 transition hover:text-light_bronze-300"
                 onClick={(event) => event.stopPropagation()}
               >
-                visit site
+                <Newscreen className="h-4 w-4" color="currentColor" />
               </a>
             ) : null}
           </div>
@@ -205,51 +430,144 @@ function EmployerSection({
           {summary}
         </p>
         <div className="space-y-4">
-          {items.map((item) => (
-            <article
-              key={`${heading}-${item.company}-${item.period}`}
-              className="rounded-3xl border border-tea_green-700/60 bg-tea_green-800/70 p-6"
-            >
-              <div className="flex flex-wrap items-baseline justify-between gap-3">
-                <div>
+          {items.map((item) => {
+            const highlights = highlightMap.get(item) ?? createEmptyHighlights()
+
+            return (
+              <article
+                key={`${heading}-${item.company}-${item.period.label}`}
+                className="rounded-3xl border border-tea_green-700/60 bg-tea_green-800/70 p-6"
+              >
+                <div className="flex flex-wrap items-baseline justify-between gap-3">
+                  <div>
+                    <p className="text-sm font-bold uppercase tracking-[0.3em] text-tea_green-300">
+                      {renderHighlightedText(
+                        item.role,
+                        highlights.role,
+                        `${item.company}-role`,
+                      )}
+                    </p>
+                    <div className="mt-2">
+                      <h3 className="text-3xl font-semibold text-light_bronze-300">
+                        {renderHighlightedText(
+                          item.company,
+                          highlights.company,
+                          `${item.company}-company`,
+                        )}
+                        {item.href ? ' ' : null}
+                        {item.href ? (
+                          <a
+                            href={item.href}
+                            target="_blank"
+                            rel="noreferrer"
+                            aria-label={`Open ${item.role} link`}
+                            className="inline-flex translate-y-[-0.08em] align-baseline text-tea_green-300 transition hover:text-light_bronze-300"
+                          >
+                            <Newscreen
+                              className="ml-1 inline h-4 w-4"
+                              color="currentColor"
+                            />
+                          </a>
+                        ) : null}
+                      </h3>
+                    </div>
+                  </div>
                   <p className="text-sm font-bold uppercase tracking-[0.3em] text-tea_green-300">
-                    {item.role}
+                    {renderHighlightedText(
+                      item.period.label,
+                      highlights.periodLabel,
+                      `${item.company}-period`,
+                    )}
                   </p>
-                  <h3 className="mt-2 text-3xl font-semibold text-light_bronze-300">
-                    {item.company}
-                  </h3>
                 </div>
-                <p className="text-sm font-bold uppercase tracking-[0.3em] text-tea_green-300">
-                  {item.period}
+                <p className="mt-4 max-w-3xl text-base leading-relaxed text-tea_green-200">
+                  {renderHighlightedText(
+                    item.summary,
+                    highlights.summary,
+                    `${item.company}-summary`,
+                  )}
                 </p>
-              </div>
-              <p className="mt-4 max-w-3xl text-base leading-relaxed text-tea_green-200">
-                {item.summary}
-              </p>
-              <ul className="mt-4 space-y-2 text-base leading-relaxed text-tea_green-200">
-                {item.highlights.map((highlight) => (
-                  <li key={highlight}>{highlight}</li>
-                ))}
-              </ul>
-              <p className="mt-5 text-sm uppercase tracking-[0.2em] text-tea_green-300">
-                {item.meta}
-              </p>
-            </article>
-          ))}
+                <ul className="mt-4 space-y-2 text-base leading-relaxed text-tea_green-200">
+                  {item.description.map((entry, index) => (
+                    <li key={entry}>
+                      {renderHighlightedText(
+                        entry,
+                        highlights.description.get(index) ?? [],
+                        `${item.company}-description-${index}`,
+                      )}
+                    </li>
+                  ))}
+                </ul>
+                <div className="mt-5 flex flex-wrap gap-2">
+                  {item.skills.map((skill, index) => (
+                    <span
+                      key={skill}
+                      className="rounded-full border border-tea_green-700/60 bg-tea_green-900 px-3 py-1 text-xs font-bold uppercase tracking-[0.2em] text-tea_green-300"
+                    >
+                      {renderHighlightedText(
+                        skill,
+                        highlights.skills.get(index) ?? [],
+                        `${item.company}-skill-${index}`,
+                      )}
+                    </span>
+                  ))}
+                </div>
+              </article>
+            )
+          })}
         </div>
       </div>
+      {showDivider ? (
+        <div className="mt-8 border-t border-tea_green-700/60" />
+      ) : null}
     </details>
   )
 }
 
 function CvPage() {
   const palette = 'teaGreen' as const
+  const [searchInputValue, setSearchInputValue] = useState('')
+  const [searchTerm, setSearchTerm] = useState('')
+  const [selectedSkill, setSelectedSkill] = useState('')
+  const [sortDirection, setSortDirection] = useState<ExperienceSort>('newest')
+  const [isFiltering, startTransition] = useTransition()
+  const skills = getAllCvSkills()
+  const searchResults = getMatchingExperiences(searchTerm)
+  const filteredSections = filterAndSortSections(
+    experienceSections,
+    searchResults,
+    selectedSkill,
+    sortDirection,
+  )
+  const visibleExperienceCount = filteredSections.reduce(
+    (count, section) => count + section.items.length,
+    0,
+  )
+
+  function handleSearchChange(value: string) {
+    setSearchInputValue(value)
+    startTransition(() => {
+      setSearchTerm(value)
+    })
+  }
+
+  function handleSkillChange(value: string) {
+    startTransition(() => {
+      setSelectedSkill(value)
+    })
+  }
+
+  function handleSortChange(value: ExperienceSort) {
+    startTransition(() => {
+      setSortDirection(value)
+    })
+  }
 
   return (
     <>
       <PageHeader
         palette={palette}
-        title="Frontend-focused fullstack developer"
+        title="Frontend‑focused fullstack developer"
         description="Master’s degree from Chalmers in High Performance Computer Systems. Production experience across banking, analytics, public services, and mobile products, with a consistent focus on frontend architecture, maintainability, and performance."
       />
 
@@ -277,17 +595,13 @@ function CvPage() {
             <li>Design systems and component structure</li>
           </ul>
         </PageCard>
-        <PageCard palette={palette} title="Education & Languages">
+        <PageCard palette={palette} title="Languages">
           <div className="space-y-4">
-            <p>
-              Chalmers University of Technology
-              <br />
-              B.Sc. Computer Science and Engineering
-              <br />
-              M.Sc. High Performance Computer Systems
-            </p>
-            <p>Swedish: Native</p>
-            <p>English: Full professional proficiency</p>
+            {languages.map((language) => (
+              <p key={language.label}>
+                {language.label}: {language.value}
+              </p>
+            ))}
           </div>
         </PageCard>
       </section>
@@ -313,36 +627,48 @@ function CvPage() {
             </span>
           </div>
         </summary>
-        <div className="mt-5 grid gap-4 sm:grid-cols-2">
+        <div className="mt-5 flex flex-wrap gap-2">
           {skills.map((skill) => (
-            <PageCard key={skill.title} palette={palette} title={skill.title}>
-              {skill.items}
-            </PageCard>
+            <span
+              key={skill}
+              className="rounded-full border border-tea_green-700/60 bg-tea_green-900 px-3 py-2 text-xs font-bold uppercase tracking-[0.2em] text-tea_green-300"
+            >
+              {skill}
+            </span>
           ))}
         </div>
       </details>
 
       <section className="space-y-4">
-        <p className="text-sm font-bold uppercase tracking-[0.4em] text-tea_green-300">
-          Experience
-        </p>
-        <EmployerSection
-          heading="Devies"
-          summary="Placeholder summary about Devies. This section groups the assignments Sabine did while working through Devies, currently SMT Data and Lea Bank."
-          href="https://www.devies.se/"
-          items={deviesExperience}
+        <ExperienceToolbar
+          searchInputValue={searchInputValue}
+          searchTerm={searchTerm}
+          selectedSkill={selectedSkill}
+          sortDirection={sortDirection}
+          skills={skills}
+          totalMatches={visibleExperienceCount}
+          isFiltering={isFiltering}
+          onSearchChange={handleSearchChange}
+          onSkillChange={handleSkillChange}
+          onSortChange={handleSortChange}
         />
-        <EmployerSection
-          heading="Helo"
-          summary="Placeholder summary about Helo. This section groups the consulting work Sabine did there across product teams, mobile apps, and frontend-heavy builds."
-          href="https://www.helo.se/"
-          items={heloExperience}
-        />
-        <EmployerSection
-          heading="Opera"
-          summary="This assignment sits separately from the consulting roles and reflects Sabine's internship experience during her studies."
-          items={operaExperience}
-        />
+        {filteredSections.length > 0 ? (
+          filteredSections.map((section, index) => (
+            <EmployerSection
+              key={section.heading}
+              heading={section.heading}
+              summary={section.summary}
+              href={section.href}
+              items={section.items}
+              highlightMap={searchResults ?? new Map()}
+              showDivider={index < filteredSections.length - 1}
+            />
+          ))
+        ) : (
+          <PageCard palette={palette} title="No matching experience">
+            No experience entries match the selected filter yet.
+          </PageCard>
+        )}
       </section>
     </>
   )
